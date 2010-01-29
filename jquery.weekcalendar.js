@@ -464,7 +464,7 @@
          //load events by chosen means
          if (typeof options.data == 'string') {
             if (options.loading) options.loading(true);
-            var jsonOptions = {};
+            var jsonOptions = options.jsonOptions;
             jsonOptions[options.startParam || 'start'] = Math.round(weekStartDate.getTime() / 1000);
             jsonOptions[options.endParam || 'end'] = Math.round(weekEndDate.getTime() / 1000);
             $.getJSON(options.data, jsonOptions, function(data) {
@@ -1358,7 +1358,8 @@
          shortMonths : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
          longMonths : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
          shortDays : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-         longDays : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+         longDays : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+         jsonOptions : {}
       }
    });
 
