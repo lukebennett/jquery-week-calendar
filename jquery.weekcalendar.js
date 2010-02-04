@@ -200,6 +200,10 @@
             options.millisToDisplay = MILLIS_IN_DAY;
             options.millisPerTimeslot = MILLIS_IN_DAY / options.timeslotsPerDay;
          }
+
+         if (options.headerFormat === '') {
+            options.headerFormat = options.useShortDayNames ? options.shortHeaderFormat : options.longHeaderFormat;
+         }
       },
 
       /*
@@ -497,9 +501,7 @@
 
          self.element.find(".wc-header td.wc-day-column-header").each(function(i, val) {
 
-            var dayName = options.useShortDayNames ? options.shortDays[currentDay.getDay()] : options.longDays[currentDay.getDay()];
-
-            $(this).html(dayName + "<br/>" + self._formatDate(currentDay, options.dateFormat));
+            $(this).html(self._formatDate(currentDay, options.headerFormat));
             if (self._isToday(currentDay)) {
                $(this).addClass("wc-today");
             } else {
@@ -1167,7 +1169,9 @@
          var returnStr = '';
          for (var i = 0; i < format.length; i++) {
             var curChar = format.charAt(i);
-            if ($.isFunction(this._replaceChars[curChar])) {
+            if (curChar === '\n') {
+               returnStr += "<br />";
+            } else if ($.isFunction(this._replaceChars[curChar])) {
                returnStr += this._replaceChars[curChar](date, options);
             } else {
                returnStr += curChar;
@@ -1301,6 +1305,9 @@
          date: new Date(),
          timeFormat : "h:i a",
          dateFormat : "M d, Y",
+         longHeaderFormat: "l\nM d, Y",  // This approach is not ideal but required to support legacy useShortDayNames option.
+         shortHeaderFormat: "D\nM d, Y", // Used in conjunction with the above
+         headerFormat: "",               // Wired up based on one of the above in _computeOptions (unless overridden by user)
          use24Hour : false,
          daysToShow : 7,
          firstDayOfWeek : 0, // 0 = Sunday, 1 = Monday, 2 = Tuesday, ... , 6 = Saturday
